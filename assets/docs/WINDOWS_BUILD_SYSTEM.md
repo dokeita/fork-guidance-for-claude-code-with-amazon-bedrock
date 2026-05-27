@@ -31,7 +31,7 @@ The Windows build system enables IT administrators to create native Windows exec
 ```mermaid
 graph TB
     subgraph "Developer Machine"
-        CLI[Claude Code CLI<br/>poetry run ccwb]
+        CLI[Claude Code CLI<br/>uv run ccwb]
         LOCAL[Local Build<br/>macOS/Linux]
     end
 
@@ -70,7 +70,7 @@ sequenceDiagram
     participant S3
     participant PS as Parameter Store
 
-    User->>CLI: poetry run ccwb package
+    User->>CLI: uv run ccwb package
     CLI->>CLI: Build macOS binaries locally
     CLI->>CodeBuild: Start Windows build (async)
     CodeBuild-->>CLI: Return build ID immediately
@@ -78,14 +78,14 @@ sequenceDiagram
 
     Note over CodeBuild: Building (20+ mins)
 
-    User->>CLI: poetry run ccwb package --status latest
+    User->>CLI: uv run ccwb package --status latest
     CLI->>CodeBuild: Check build status
     CodeBuild-->>CLI: Status: IN_PROGRESS/SUCCEEDED
     CLI-->>User: Build status
 
     CodeBuild->>S3: Upload artifacts
 
-    User->>CLI: poetry run ccwb distribute
+    User->>CLI: uv run ccwb distribute
     CLI->>S3: Create package
     S3->>S3: Generate presigned URL
     CLI->>PS: Store URL metadata
@@ -97,7 +97,7 @@ sequenceDiagram
 ### Local Requirements
 
 - Python 3.10, 3.11, or 3.12 (not 3.13+)
-- Poetry package manager
+- uv package manager
 - AWS CLI v2 configured
 - Git
 
@@ -123,13 +123,13 @@ cd guidance-for-claude-code-with-amazon-bedrock/source
 ### 2. Install Dependencies
 
 ```bash
-poetry install
+uv sync
 ```
 
 ### 3. Initialize Configuration
 
 ```bash
-poetry run ccwb init
+uv run ccwb init
 ```
 
 During initialization, you'll be prompted for:
@@ -144,7 +144,7 @@ During initialization, you'll be prompted for:
 ### 4. Deploy Infrastructure
 
 ```bash
-poetry run ccwb deploy
+uv run ccwb deploy
 ```
 
 This creates the following CloudFormation stacks:
@@ -159,7 +159,7 @@ This creates the following CloudFormation stacks:
 ### 5. Verify CodeBuild Deployment
 
 ```bash
-poetry run ccwb status
+uv run ccwb status
 ```
 
 Verify CodeBuild is deployed:
@@ -178,7 +178,7 @@ CodeBuild Stack:
 The package command now operates asynchronously by default:
 
 ```bash
-poetry run ccwb package
+uv run ccwb package
 ```
 
 Output:
@@ -216,7 +216,7 @@ Windows build started!
 Build will take approximately 12-15 minutes to complete.
 
 To check status:
-  poetry run ccwb package --status claude-code-auth-windows-build:abc123-def456-789
+  uv run ccwb package --status claude-code-auth-windows-build:abc123-def456-789
 
 To view logs in AWS Console:
   https://console.aws.amazon.com/codesuite/codebuild/projects/claude-code-auth-windows-build/build/abc123-def456-789
@@ -227,13 +227,13 @@ To view logs in AWS Console:
 Check the latest build:
 
 ```bash
-poetry run ccwb package --status latest
+uv run ccwb package --status latest
 ```
 
 Check a specific build:
 
 ```bash
-poetry run ccwb package --status claude-code-auth-windows-build:abc123-def456-789
+uv run ccwb package --status claude-code-auth-windows-build:abc123-def456-789
 ```
 
 Status outputs:
@@ -246,7 +246,7 @@ Elapsed: 5 minutes
 ✓ Build succeeded!
 Duration: 13 minutes
 Artifacts are ready. Run the following to complete packaging:
-poetry run ccwb package --complete
+uv run ccwb package --complete
 
 ✗ Build failed
 Failed in phase: BUILD
@@ -255,7 +255,7 @@ Failed in phase: BUILD
 ### Listing Recent Builds
 
 ```bash
-poetry run ccwb builds
+uv run ccwb builds
 ```
 
 Output:
@@ -278,7 +278,7 @@ Output:
 **Basic usage:**
 
 ```bash
-poetry run ccwb package [options]
+uv run ccwb package [options]
 ```
 
 **Options:**
@@ -295,19 +295,19 @@ poetry run ccwb package [options]
 Build all platforms (returns immediately for Windows):
 
 ```bash
-poetry run ccwb package
+uv run ccwb package
 ```
 
 Build and distribute:
 
 ```bash
-poetry run ccwb package --distribute
+uv run ccwb package --distribute
 ```
 
 Check status:
 
 ```bash
-poetry run ccwb package --status latest
+uv run ccwb package --status latest
 ```
 
 ### Builds Command
@@ -315,7 +315,7 @@ poetry run ccwb package --status latest
 **Basic usage:**
 
 ```bash
-poetry run ccwb builds [options]
+uv run ccwb builds [options]
 ```
 
 **Options:**
@@ -329,7 +329,7 @@ poetry run ccwb builds [options]
 **Basic usage:**
 
 ```bash
-poetry run ccwb distribute [options]
+uv run ccwb distribute [options]
 ```
 
 **Options:**
@@ -346,13 +346,13 @@ poetry run ccwb distribute [options]
 Create new distribution:
 
 ```bash
-poetry run ccwb distribute
+uv run ccwb distribute
 ```
 
 Get existing URL:
 
 ```bash
-poetry run ccwb distribute --get-latest
+uv run ccwb distribute --get-latest
 ```
 
 ## Distribution
@@ -637,7 +637,7 @@ S3: claude-code-auth-codebuild-buildbucket-xxxxx/
 
 ```mermaid
 flowchart TD
-    Start([User runs: poetry run ccwb package])
+    Start([User runs: uv run ccwb package])
     Start --> CheckPlatform{Target platform?}
 
     CheckPlatform -->|macOS/Linux| LocalBuild[Build locally with Nuitka]
@@ -672,20 +672,20 @@ flowchart TD
 
 ```bash
 # Daily workflow
-poetry run ccwb package                    # Start build (async)
-poetry run ccwb builds                     # Check recent builds
-poetry run ccwb package --status latest    # Check if done
-poetry run ccwb distribute                 # Create distribution
+uv run ccwb package                    # Start build (async)
+uv run ccwb builds                     # Check recent builds
+uv run ccwb package --status latest    # Check if done
+uv run ccwb distribute                 # Create distribution
 
 # Get existing URL (no rebuild)
-poetry run ccwb distribute --get-latest
+uv run ccwb distribute --get-latest
 
 # Debug failed build
-poetry run ccwb package --status latest
+uv run ccwb package --status latest
 aws logs tail /aws/codebuild/claude-code-auth-windows-build --region us-east-1
 
 # Extended distribution (7 days)
-poetry run ccwb distribute --expires-hours 168
+uv run ccwb distribute --expires-hours 168
 ```
 
 ---

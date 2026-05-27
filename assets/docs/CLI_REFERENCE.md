@@ -57,10 +57,10 @@ git clone [<repository-url>](https://github.com/aws-solutions-library-samples/gu
 cd guidance-for-claude-code-with-amazon-bedrock/source
 
 # Install dependencies
-poetry install
+uv sync
 
-# Run commands with poetry
-poetry run ccwb <command>
+# Run commands with uv
+uv run ccwb <command>
 ```
 
 ## Command Reference
@@ -70,7 +70,7 @@ poetry run ccwb <command>
 Creates or updates the configuration for your Claude Code deployment.
 
 ```bash
-poetry run ccwb init [options]
+uv run ccwb init [options]
 ```
 
 **Options:**
@@ -105,7 +105,7 @@ poetry run ccwb init [options]
 Deploys CloudFormation stacks for authentication and monitoring.
 
 ```bash
-poetry run ccwb deploy [stack] [options]
+uv run ccwb deploy [stack] [options]
 ```
 
 **Arguments:**
@@ -141,19 +141,19 @@ poetry run ccwb deploy [stack] [options]
 
 ```bash
 # Deploy all configured stacks
-poetry run ccwb deploy
+uv run ccwb deploy
 
 # Deploy only authentication
-poetry run ccwb deploy auth
+uv run ccwb deploy auth
 
 # Deploy quota monitoring (requires dashboard stack first)
-poetry run ccwb deploy quota
+uv run ccwb deploy quota
 
 # Show commands without executing
-poetry run ccwb deploy --show-commands
+uv run ccwb deploy --show-commands
 
 # Dry run to see what would be deployed
-poetry run ccwb deploy --dry-run
+uv run ccwb deploy --dry-run
 ```
 
 > **Note**: Quota monitoring requires the dashboard stack to be deployed first. See [Quota Monitoring Guide](QUOTA_MONITORING.md) for detailed information.
@@ -178,7 +178,7 @@ poetry run ccwb deploy --dry-run
 Tests the packaged distribution as an end user would experience it.
 
 ```bash
-poetry run ccwb test [options]
+uv run ccwb test [options]
 ```
 
 **Options:**
@@ -213,16 +213,16 @@ When using `--quota-only`, runs comprehensive quota monitoring tests:
 
 ```bash
 # Run standard tests
-poetry run ccwb test
+uv run ccwb test
 
 # Run only quota monitoring tests (fastest for quota validation)
-poetry run ccwb test --quota-only
+uv run ccwb test --quota-only
 
 # Test quota API against a staging endpoint
-poetry run ccwb test --quota-only --quota-api https://staging-api.example.com/prod
+uv run ccwb test --quota-only --quota-api https://staging-api.example.com/prod
 
 # Run all tests with custom quota endpoint
-poetry run ccwb test --quota-api https://my-api.execute-api.us-east-1.amazonaws.com/prod
+uv run ccwb test --quota-api https://my-api.execute-api.us-east-1.amazonaws.com/prod
 ```
 
 **Note:** API tests run by default and make actual calls to Bedrock (minimal cost ~$0.001).
@@ -232,7 +232,7 @@ poetry run ccwb test --quota-api https://my-api.execute-api.us-east-1.amazonaws.
 Creates a distribution package for end users.
 
 ```bash
-poetry run ccwb package [options]
+uv run ccwb package [options]
 ```
 
 **Options:**
@@ -399,7 +399,7 @@ dist/
 Shows recent Windows binary builds and their status.
 
 ```bash
-poetry run ccwb builds [options]
+uv run ccwb builds [options]
 ```
 
 **Options:**
@@ -424,19 +424,19 @@ poetry run ccwb builds [options]
 
 ```bash
 # List builds for active profile
-poetry run ccwb builds
+uv run ccwb builds
 
 # List builds for specific profile
-poetry run ccwb builds --profile production
+uv run ccwb builds --profile production
 
 # Check status of specific build
-poetry run ccwb builds --status abc12345
+uv run ccwb builds --status abc12345
 
 # Check latest build status and download artifacts
-poetry run ccwb builds --status latest --download
+uv run ccwb builds --status latest --download
 
 # List last 20 builds
-poetry run ccwb builds --limit 20
+uv run ccwb builds --limit 20
 ```
 
 **Example output:**
@@ -455,7 +455,7 @@ Recent Windows Builds
 Upload and distribute built packages via presigned S3 URLs or authenticated landing page.
 
 ```bash
-poetry run ccwb distribute [options]
+uv run ccwb distribute [options]
 ```
 
 **Options:**
@@ -490,8 +490,8 @@ Behavior depends on your configured distribution type:
 
 **Distribution workflow:**
 
-1. Build packages: `poetry run ccwb package`
-2. Upload and distribute: `poetry run ccwb distribute`
+1. Build packages: `uv run ccwb package`
+2. Upload and distribute: `uv run ccwb distribute`
 3. **Presigned-s3**: Share generated URLs with developers
 4. **Landing-page**: Direct users to your landing page URL
 
@@ -499,22 +499,22 @@ Behavior depends on your configured distribution type:
 
 ```bash
 # Distribute latest build (interactive build selection)
-poetry run ccwb distribute
+uv run ccwb distribute
 
 # Distribute latest build automatically (skip wizard)
-poetry run ccwb distribute --latest
+uv run ccwb distribute --latest
 
 # Distribute specific build by timestamp
-poetry run ccwb distribute --timestamp 2024-11-14-083022
+uv run ccwb distribute --timestamp 2024-11-14-083022
 
 # Distribute with custom expiration (presigned-s3 only)
-poetry run ccwb distribute --expires-hours=72
+uv run ccwb distribute --expires-hours=72
 
 # Get existing URL without re-uploading (presigned-s3 only)
-poetry run ccwb distribute --get-latest
+uv run ccwb distribute --get-latest
 
 # Distribute with QR code for mobile sharing
-poetry run ccwb distribute --show-qr
+uv run ccwb distribute --show-qr
 ```
 
 **Build Selection:**
@@ -542,7 +542,7 @@ Landing page auto-detects user's OS and recommends appropriate package.
 Shows the current deployment status and configuration.
 
 ```bash
-poetry run ccwb status [options]
+uv run ccwb status [options]
 ```
 
 **Options:**
@@ -569,7 +569,7 @@ poetry run ccwb status [options]
 Removes components installed by the test command or manual installation.
 
 ```bash
-poetry run ccwb cleanup [options]
+uv run ccwb cleanup [options]
 ```
 
 **Options:**
@@ -600,21 +600,21 @@ This command reads your existing deployment profile (region, model, monitoring s
 
 ```bash
 # Generate all formats (JSON, macOS .mobileconfig, Windows .reg)
-poetry run ccwb cowork generate
+uv run ccwb cowork generate
 
 # Generate specific format
-poetry run ccwb cowork generate --format mobileconfig
-poetry run ccwb cowork generate --format reg
-poetry run ccwb cowork generate --format json
+uv run ccwb cowork generate --format mobileconfig
+uv run ccwb cowork generate --format reg
+uv run ccwb cowork generate --format json
 
 # Custom model aliases
-poetry run ccwb cowork generate --models opus,sonnet,haiku
+uv run ccwb cowork generate --models opus,sonnet,haiku
 
 # Custom output directory
-poetry run ccwb cowork generate -o ./my-mdm-configs/
+uv run ccwb cowork generate -o ./my-mdm-configs/
 
 # Specific profile
-poetry run ccwb cowork generate --profile Production
+uv run ccwb cowork generate --profile Production
 ```
 
 **Options:**
@@ -651,7 +651,7 @@ For detailed architecture and configuration, see [QUOTA_MONITORING.md](QUOTA_MON
 Sets a quota policy for a specific user.
 
 ```bash
-poetry run ccwb quota set-user <email> [options]
+uv run ccwb quota set-user <email> [options]
 ```
 
 **Arguments:**
@@ -666,7 +666,7 @@ poetry run ccwb quota set-user <email> [options]
 
 **Example:**
 ```bash
-poetry run ccwb quota set-user alice@example.com -m 5M -e block
+uv run ccwb quota set-user alice@example.com -m 5M -e block
 ```
 
 ### `quota set-group` - Set Group Quota
@@ -674,7 +674,7 @@ poetry run ccwb quota set-user alice@example.com -m 5M -e block
 Sets a quota policy for a group (applies to all users in the group).
 
 ```bash
-poetry run ccwb quota set-group <group> [options]
+uv run ccwb quota set-group <group> [options]
 ```
 
 **Arguments:**
@@ -685,7 +685,7 @@ poetry run ccwb quota set-group <group> [options]
 
 **Example:**
 ```bash
-poetry run ccwb quota set-group engineering -m 20M -d 1M -e alert
+uv run ccwb quota set-group engineering -m 20M -d 1M -e alert
 ```
 
 ### `quota set-default` - Set Default Quota
@@ -693,7 +693,7 @@ poetry run ccwb quota set-group engineering -m 20M -d 1M -e alert
 Sets the default quota policy for all users without a specific user or group policy.
 
 ```bash
-poetry run ccwb quota set-default [options]
+uv run ccwb quota set-default [options]
 ```
 
 **Options:**
@@ -701,7 +701,7 @@ poetry run ccwb quota set-default [options]
 
 **Example:**
 ```bash
-poetry run ccwb quota set-default -m 225M -e alert
+uv run ccwb quota set-default -m 225M -e alert
 ```
 
 ### `quota list` - List Policies
@@ -709,7 +709,7 @@ poetry run ccwb quota set-default -m 225M -e alert
 Lists all quota policies.
 
 ```bash
-poetry run ccwb quota list [options]
+uv run ccwb quota list [options]
 ```
 
 **Options:**
@@ -721,7 +721,7 @@ poetry run ccwb quota list [options]
 Deletes a quota policy.
 
 ```bash
-poetry run ccwb quota delete <type> <identifier> [options]
+uv run ccwb quota delete <type> <identifier> [options]
 ```
 
 **Arguments:**
@@ -733,7 +733,7 @@ poetry run ccwb quota delete <type> <identifier> [options]
 
 **Example:**
 ```bash
-poetry run ccwb quota delete user alice@example.com
+uv run ccwb quota delete user alice@example.com
 ```
 
 ### `quota show` - Show Effective Quota
@@ -741,7 +741,7 @@ poetry run ccwb quota delete user alice@example.com
 Shows the effective quota policy for a user (resolves user > group > default precedence).
 
 ```bash
-poetry run ccwb quota show <email> [options]
+uv run ccwb quota show <email> [options]
 ```
 
 **Arguments:**
@@ -755,7 +755,7 @@ poetry run ccwb quota show <email> [options]
 Shows current usage against quota limits for a user.
 
 ```bash
-poetry run ccwb quota usage <email> [options]
+uv run ccwb quota usage <email> [options]
 ```
 
 **Arguments:**
@@ -769,7 +769,7 @@ poetry run ccwb quota usage <email> [options]
 Temporarily unblocks a user who has been blocked due to quota exceeded.
 
 ```bash
-poetry run ccwb quota unblock <email> [options]
+uv run ccwb quota unblock <email> [options]
 ```
 
 **Arguments:**
@@ -782,7 +782,7 @@ poetry run ccwb quota unblock <email> [options]
 
 **Example:**
 ```bash
-poetry run ccwb quota unblock alice@example.com --duration 24h --reason "Emergency project deadline"
+uv run ccwb quota unblock alice@example.com --duration 24h --reason "Emergency project deadline"
 ```
 
 ### `quota export` - Export Policies
@@ -790,7 +790,7 @@ poetry run ccwb quota unblock alice@example.com --duration 24h --reason "Emergen
 Exports quota policies to a JSON or CSV file for backup, migration, or auditing.
 
 ```bash
-poetry run ccwb quota export <file> [options]
+uv run ccwb quota export <file> [options]
 ```
 
 **Arguments:**
@@ -804,16 +804,16 @@ poetry run ccwb quota export <file> [options]
 **Examples:**
 ```bash
 # Export all policies to JSON
-poetry run ccwb quota export policies.json
+uv run ccwb quota export policies.json
 
 # Export to CSV for spreadsheet editing
-poetry run ccwb quota export policies.csv
+uv run ccwb quota export policies.csv
 
 # Export only user policies
-poetry run ccwb quota export users.json --type user
+uv run ccwb quota export users.json --type user
 
 # Export to stdout (for piping)
-poetry run ccwb quota export --stdout > backup.json
+uv run ccwb quota export --stdout > backup.json
 ```
 
 **JSON output format:**
@@ -847,7 +847,7 @@ default,default,225M,8M,alert,true
 Imports quota policies from a JSON or CSV file. Supports bulk policy creation with conflict handling.
 
 ```bash
-poetry run ccwb quota import <file> [options]
+uv run ccwb quota import <file> [options]
 ```
 
 **Arguments:**
@@ -865,19 +865,19 @@ poetry run ccwb quota import <file> [options]
 **Examples:**
 ```bash
 # Import from JSON, skip existing policies
-poetry run ccwb quota import policies.json --skip-existing
+uv run ccwb quota import policies.json --skip-existing
 
 # Import from CSV, update existing policies
-poetry run ccwb quota import policies.csv --update
+uv run ccwb quota import policies.csv --update
 
 # Preview import without making changes
-poetry run ccwb quota import policies.json --dry-run
+uv run ccwb quota import policies.json --dry-run
 
 # Import users only
-poetry run ccwb quota import all-policies.csv --type user --update
+uv run ccwb quota import all-policies.csv --type user --update
 
 # Auto-calculate daily limits with 15% burst buffer
-poetry run ccwb quota import users.csv --auto-daily --burst 15
+uv run ccwb quota import users.csv --auto-daily --burst 15
 ```
 
 **Output example:**
@@ -913,7 +913,7 @@ The following commands manage multiple deployment profiles (v2.0+). Profiles let
 Shows all available profiles with an indicator for the active profile.
 
 ```bash
-poetry run ccwb context list
+uv run ccwb context list
 ```
 
 **What it does:**
@@ -940,7 +940,7 @@ Total profiles: 3
 Displays the currently active profile name.
 
 ```bash
-poetry run ccwb context current
+uv run ccwb context current
 ```
 
 **What it does:**
@@ -959,7 +959,7 @@ Current profile: production
 Changes the active profile to the specified one.
 
 ```bash
-poetry run ccwb context use <profile-name>
+uv run ccwb context use <profile-name>
 ```
 
 **Arguments:**
@@ -976,10 +976,10 @@ poetry run ccwb context use <profile-name>
 
 ```bash
 # Switch to production profile
-poetry run ccwb context use production
+uv run ccwb context use production
 
 # Switch to development profile
-poetry run ccwb context use development
+uv run ccwb context use development
 ```
 
 ### `context show` - Display Profile Details
@@ -987,7 +987,7 @@ poetry run ccwb context use development
 Shows detailed configuration for a profile.
 
 ```bash
-poetry run ccwb context show [profile-name]
+uv run ccwb context show [profile-name]
 ```
 
 **Arguments:**
@@ -1012,13 +1012,13 @@ poetry run ccwb context show [profile-name]
 
 ```bash
 # Show active profile details
-poetry run ccwb context show
+uv run ccwb context show
 
 # Show specific profile
-poetry run ccwb context show production
+uv run ccwb context show production
 
 # Output as JSON
-poetry run ccwb context show --json
+uv run ccwb context show --json
 ```
 
 ### `config validate` - Validate Profile Configuration
@@ -1026,7 +1026,7 @@ poetry run ccwb context show --json
 Validates profile configuration for errors.
 
 ```bash
-poetry run ccwb config validate [profile-name|all]
+uv run ccwb config validate [profile-name|all]
 ```
 
 **Arguments:**
@@ -1045,13 +1045,13 @@ poetry run ccwb config validate [profile-name|all]
 
 ```bash
 # Validate active profile
-poetry run ccwb config validate
+uv run ccwb config validate
 
 # Validate specific profile
-poetry run ccwb config validate production
+uv run ccwb config validate production
 
 # Validate all profiles
-poetry run ccwb config validate all
+uv run ccwb config validate all
 ```
 
 ### `config export` - Export Profile Configuration
@@ -1059,7 +1059,7 @@ poetry run ccwb config validate all
 Exports a profile configuration to a file (sanitized).
 
 ```bash
-poetry run ccwb config export [profile-name] [options]
+uv run ccwb config export [profile-name] [options]
 ```
 
 **Arguments:**
@@ -1081,13 +1081,13 @@ poetry run ccwb config export [profile-name] [options]
 
 ```bash
 # Export active profile (secrets removed)
-poetry run ccwb config export
+uv run ccwb config export
 
 # Export specific profile to custom path
-poetry run ccwb config export production --output prod-config.json
+uv run ccwb config export production --output prod-config.json
 
 # Export with secrets (use caution)
-poetry run ccwb config export --include-secrets
+uv run ccwb config export --include-secrets
 ```
 
 ### `config import` - Import Profile Configuration
@@ -1095,7 +1095,7 @@ poetry run ccwb config export --include-secrets
 Imports a profile configuration from a file.
 
 ```bash
-poetry run ccwb config import <file> [name]
+uv run ccwb config import <file> [name]
 ```
 
 **Arguments:**
@@ -1119,16 +1119,16 @@ poetry run ccwb config import <file> [name]
 
 ```bash
 # Import profile with default name
-poetry run ccwb config import prod-config.json
+uv run ccwb config import prod-config.json
 
 # Import with custom name
-poetry run ccwb config import config.json staging
+uv run ccwb config import config.json staging
 
 # Import and set as active
-poetry run ccwb config import config.json --set-active
+uv run ccwb config import config.json --set-active
 
 # Overwrite existing profile
-poetry run ccwb config import config.json production --overwrite
+uv run ccwb config import config.json production --overwrite
 ```
 
 ### `destroy` - Remove Infrastructure
@@ -1136,7 +1136,7 @@ poetry run ccwb config import config.json production --overwrite
 Removes deployed AWS infrastructure.
 
 ```bash
-poetry run ccwb destroy [stack] [options]
+uv run ccwb destroy [stack] [options]
 ```
 
 **Arguments:**

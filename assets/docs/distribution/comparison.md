@@ -36,7 +36,7 @@ Admin Machine → S3 → Presigned URL (7 days) → User downloads directly
 
 **How it works:**
 
-1. Admin runs `poetry run ccwb distribute`
+1. Admin runs `uv run ccwb distribute`
 2. Package uploaded to S3
 3. Presigned URL generated (expires in 7 days)
 4. Admin shares URL via Slack/email
@@ -67,7 +67,7 @@ Admin Machine → S3 → Lambda (generates presigned URLs) → User authenticate
 
 **How it works:**
 
-1. Admin runs `poetry run ccwb distribute`
+1. Admin runs `uv run ccwb distribute`
 2. Package uploaded to S3
 3. Admin shares landing page URL via Slack/email
 4. Users navigate to landing page
@@ -120,9 +120,9 @@ Admin Machine → S3 → Lambda (generates presigned URLs) → User authenticate
 
 ### Presigned S3 URLs Setup
 
-1. Run `poetry run ccwb init`
+1. Run `uv run ccwb init`
 2. Select "Presigned S3 URLs (simple, no authentication)"
-3. Run `poetry run ccwb deploy distribution`
+3. Run `uv run ccwb deploy distribution`
 4. Wait 2-3 minutes for deployment
 5. **Ready to use!**
 
@@ -133,10 +133,10 @@ Admin Machine → S3 → Lambda (generates presigned URLs) → User authenticate
    - Azure AD: Register application with "Web" platform
    - Auth0: Create "Regular Web Application"
    - Cognito: Create app client with "Authorization code" grant
-2. Run `poetry run ccwb init`
+2. Run `uv run ccwb init`
 3. Select "Authenticated Landing Page (IdP + ALB)"
 4. Enter IdP details (domain, client ID, client secret)
-5. Run `poetry run ccwb deploy distribution`
+5. Run `uv run ccwb deploy distribution`
 6. Wait 5-10 minutes for deployment
 7. Configure IdP redirect URI (displayed after deployment)
 8. **Ready to use!**
@@ -187,9 +187,9 @@ Admin Machine → S3 → Lambda (generates presigned URLs) → User authenticate
 
 You can switch between distribution types by:
 
-1. Run `poetry run ccwb init` (reconfigure)
+1. Run `uv run ccwb init` (reconfigure)
 2. Select different distribution type
-3. Run `poetry run ccwb deploy distribution`
+3. Run `uv run ccwb deploy distribution`
 4. CloudFormation will replace the stack with new type
 
 **Note:** Same stack name used for both types, so you can't have both deployed simultaneously.

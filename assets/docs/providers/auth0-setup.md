@@ -176,10 +176,10 @@ The CLI accepts multiple formats for the Auth0 provider domain:
 
 ### Use the values with ccwb init
 
-When running `poetry run ccwb init`, you'll be prompted for these values:
+When running `uv run ccwb init`, you'll be prompted for these values:
 
 ```bash
-poetry run ccwb init
+uv run ccwb init
 
 # The wizard will ask for:
 # - Auth0 Domain: your-name.auth0.com       (your domain from above)
@@ -289,11 +289,11 @@ Once you've completed this Auth0 setup:
    ```bash
    git clone https://github.com/aws-solutions-library-samples/guidance-for-claude-code-with-amazon-bedrock.git
    cd claude-code-setup
-   poetry install
+   uv sync
    ```
-2. Run the setup wizard: `poetry run ccwb init`
-3. Create a distribution package: `poetry run ccwb package`
-4. Test the deployment: `poetry run ccwb test --api`
+2. Run the setup wizard: `uv run ccwb init`
+3. Create a distribution package: `uv run ccwb package`
+4. Test the deployment: `uv run ccwb test --api`
 5. Distribute the `dist/` folder to your users
 
 ---

@@ -2,7 +2,7 @@
 
 This guide walks IT administrators through deploying Claude Code authentication across your organization, transforming your existing identity provider into a gateway for secure Amazon Bedrock access.
 
-> **Prerequisites**: See the [main README](../../README.md#prerequisites) for detailed requirements. You'll need AWS administrative access, an OIDC identity provider, and Python with Poetry installed.
+> **Prerequisites**: See the [main README](../../README.md#prerequisites) for detailed requirements. You'll need AWS administrative access, an OIDC identity provider, and Python with uv installed.
 
 ## The Deployment Process
 
@@ -29,10 +29,10 @@ With your identity provider configured, it's time to deploy the AWS infrastructu
 ```bash
 git clone https://github.com/aws-solutions-library-samples/guidance-for-claude-code-with-amazon-bedrock
 cd guidance-for-claude-code-with-amazon-bedrock/source
-poetry install
+uv sync
 ```
 
-The `ccwb` (Claude Code with Bedrock) CLI tool guides you through deployment with an interactive wizard. Run `poetry run ccwb init` to begin. The wizard walks you through each configuration decision, starting with your OIDC provider details - enter the domain and Client ID you noted earlier.
+The `ccwb` (Claude Code with Bedrock) CLI tool guides you through deployment with an interactive wizard. Run `uv run ccwb init` to begin. The wizard walks you through each configuration decision, starting with your OIDC provider details - enter the domain and Client ID you noted earlier.
 
 The wizard asks you to choose an authentication method. You can select either Direct IAM federation or Cognito Identity Pool based on your organization's requirements. Both methods provide secure OIDC federation to AWS credentials.
 
@@ -41,7 +41,7 @@ Next, you'll select your Claude model and configure regional access. Choose from
 Once configuration is complete, deploy the infrastructure with:
 
 ```bash
-poetry run ccwb deploy
+uv run ccwb deploy
 ```
 
 This single command orchestrates the creation of multiple AWS resources. Depending on your chosen authentication method, it creates either an IAM OIDC Provider or a Cognito Identity Pool to establish the trust relationship with your identity provider. IAM roles and policies grant precisely scoped Bedrock access.
@@ -63,12 +63,12 @@ Claude Code supports building for all major platforms:
 
 ```bash
 # Build for all platforms (recommended)
-poetry run ccwb package --target-platform=all
+uv run ccwb package --target-platform=all
 
 # Build for specific platforms
-poetry run ccwb package --target-platform=windows    # Windows via CodeBuild
-poetry run ccwb package --target-platform=macos      # Current macOS architecture
-poetry run ccwb package --target-platform=linux      # Linux via Docker
+uv run ccwb package --target-platform=windows    # Windows via CodeBuild
+uv run ccwb package --target-platform=macos      # Current macOS architecture
+uv run ccwb package --target-platform=linux      # Linux via Docker
 ```
 
 **Platform Build Methods (Hybrid System):**
@@ -121,7 +121,7 @@ The resulting `dist/` folder contains everything users need:
 
 Windows binary builds use AWS CodeBuild with Nuitka for optimal performance. Windows support is optional and configured during the `init` process:
 
-1. **Enable during init**: When running `poetry run ccwb init`, you'll be prompted:
+1. **Enable during init**: When running `uv run ccwb init`, you'll be prompted:
 
    ```
    Enable Windows build support via AWS CodeBuild? (y/N)
@@ -132,14 +132,14 @@ Windows binary builds use AWS CodeBuild with Nuitka for optimal performance. Win
 2. **If enabled**, Windows builds will automatically trigger when you run:
 
    ```bash
-   poetry run ccwb package --target-platform=all
+   uv run ccwb package --target-platform=all
    # or specifically for Windows:
-   poetry run ccwb package --target-platform=windows
+   uv run ccwb package --target-platform=windows
    ```
 
 3. **Monitor build progress**:
    ```bash
-   poetry run ccwb builds
+   uv run ccwb builds
    ```
 
 **Important Notes:**
@@ -147,14 +147,14 @@ Windows binary builds use AWS CodeBuild with Nuitka for optimal performance. Win
 - Windows builds are completely optional - the package will work without them
 - If CodeBuild is not enabled, Windows builds will be silently skipped
 - Windows builds take 20+ minutes
-- To enable Windows builds after initial setup, re-run `poetry run ccwb init`
+- To enable Windows builds after initial setup, re-run `uv run ccwb init`
 
 ## Phase 4: Testing Your Deployment
 
 Before distributing to users, thoroughly test the package to ensure everything works as expected. The CLI provides a comprehensive test command that simulates exactly what end users will experience:
 
 ```bash
-poetry run ccwb test
+uv run ccwb test
 ```
 
 This test runs through the complete user journey. It executes the installer in a temporary directory, configures the AWS profile, triggers the authentication flow, and verifies access to Amazon Bedrock. Watch as it opens a browser window for authentication - this is exactly what your users will see.
@@ -162,7 +162,7 @@ This test runs through the complete user journey. It executes the installer in a
 For more thorough validation, add the `--api` flag to make actual Bedrock API calls:
 
 ```bash
-poetry run ccwb test --api
+uv run ccwb test --api
 ```
 
 ## Phase 5: Distributing to Your Users
@@ -175,10 +175,10 @@ Generate a presigned URL for easy, secure distribution without requiring AWS cre
 
 ```bash
 # Create distribution with 48-hour expiration
-poetry run ccwb distribute
+uv run ccwb distribute
 
 # Or specify custom expiration (up to 7 days)
-poetry run ccwb distribute --expires-hours=72
+uv run ccwb distribute --expires-hours=72
 ```
 
 The command uploads your package to S3 and generates a secure, time-limited URL. Share this URL with developers via email, Slack, or your internal wiki. Users download and run the installer - no AWS credentials required.

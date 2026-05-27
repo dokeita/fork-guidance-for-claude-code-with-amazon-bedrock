@@ -12,7 +12,7 @@ Complete deployment walkthrough for IT administrators deploying Claude Code with
 ### Software Requirements
 
 - Python 3.10-3.13
-- Poetry (dependency management)
+- uv (dependency management)
 - AWS CLI v2
 - Git
 
@@ -91,7 +91,7 @@ git clone https://github.com/aws-solutions-library-samples/guidance-for-claude-c
 cd guidance-for-claude-code-with-amazon-bedrock/source
 
 # Install dependencies
-poetry install
+uv sync
 ```
 
 ### Step 2: Initialize Configuration
@@ -99,7 +99,7 @@ poetry install
 Run the interactive setup wizard:
 
 ```bash
-poetry run ccwb init
+uv run ccwb init
 ```
 
 The wizard runs through three numbered steps plus optional features. Every question is explained below — read this section before running the wizard so you know exactly what to enter.
@@ -237,7 +237,7 @@ export AWS_PROFILE=<your-admin-profile>
 aws sts get-caller-identity
 
 # Then run the wizard
-poetry run ccwb init
+uv run ccwb init
 ```
 
 ---
@@ -573,7 +573,7 @@ If you need to re-run the wizard to change settings, run `ccwb init` again with 
 Deploy the AWS CloudFormation stacks:
 
 ```bash
-poetry run ccwb deploy
+uv run ccwb deploy
 ```
 
 This deploys in order based on what you configured in Step 2:
@@ -616,7 +616,7 @@ This deploys in order based on what you configured in Step 2:
 **Deployment takes 5–15 minutes** depending on which stacks are enabled. Monitor progress:
 
 ```bash
-poetry run ccwb status
+uv run ccwb status
 ```
 
 ### Step 4: Create Distribution Package
@@ -625,13 +625,13 @@ Build the package for end users:
 
 ```bash
 # Build all platforms (starts Windows build in background)
-poetry run ccwb package --target-platform all
+uv run ccwb package --target-platform all
 
 # Check Windows build status (optional)
-poetry run ccwb builds
+uv run ccwb builds
 
 # When ready, create distribution URL (optional)
-poetry run ccwb distribute
+uv run ccwb distribute
 ```
 
 **Choosing macOS targets:**
@@ -641,10 +641,10 @@ Before selecting, check your machine's architecture:
 ```bash
 uname -m
 python3 -c "import platform; print(platform.machine())"
-poetry run python -c "import platform; print(platform.machine())"
+uv run python -c "import platform; print(platform.machine())"
 ```
 
-All three should return the same value. The Poetry command is most important — it confirms what architecture PyInstaller will use when building the binary.
+All three should return the same value. The uv command is most important — it confirms what architecture PyInstaller will use when building the binary.
 
 - `arm64` → you are on Apple Silicon — select `macos-arm64`
 - `x86_64` → you are on Intel — select `macos-intel`
@@ -670,7 +670,7 @@ Pick based on what your developers report:
 
 1. **Local builds**: macOS/Linux executables are built locally using PyInstaller
 2. **Windows builds**: Trigger AWS CodeBuild for Windows executables (20+ minutes) - requires enabling CodeBuild during `init`
-3. **Check status**: Monitor build progress with `poetry run ccwb builds`
+3. **Check status**: Monitor build progress with `uv run ccwb builds`
 4. **Create distribution**: Use `distribute` to upload and generate presigned URLs
 
 > **Note**: Windows builds are optional and require CodeBuild to be enabled during the `init` process. If not enabled, the package command will skip Windows builds and continue with other platforms.
@@ -700,7 +700,7 @@ The package builder:
 Verify everything works correctly:
 
 ```bash
-poetry run ccwb test
+uv run ccwb test
 ```
 
 This will:
@@ -737,7 +737,7 @@ zip -r claude-code-packages.zip .
 Automated distribution via time-limited S3 URLs:
 
 ```bash
-poetry run ccwb distribute
+uv run ccwb distribute
 ```
 
 Generates presigned URLs (default 48-hour expiry) that you share with users via email or messaging.
@@ -752,10 +752,10 @@ Self-service portal with IdP authentication:
 
 ```bash
 # Deploy landing page infrastructure (if not done during Step 3)
-poetry run ccwb deploy distribution
+uv run ccwb deploy distribution
 
 # Upload packages to landing page
-poetry run ccwb distribute
+uv run ccwb distribute
 ```
 
 Users visit your landing page URL, authenticate with SSO, and download packages for their platform.
@@ -798,7 +798,7 @@ If not configured, cross-arch builds are skipped and the package command continu
 You are responsible for the costs of AWS services while running this guidance. If you decide that you no longer need the guidance, please ensure that infrastructure resources are removed.
 
 ```bash
-poetry run ccwb destroy
+uv run ccwb destroy
 ```
 
 ---
@@ -832,7 +832,7 @@ unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 python3 -c "import boto3; print(boto3.client('sts').get_caller_identity())"
 
 # 4. Re-run init
-poetry run ccwb init
+uv run ccwb init
 ```
 
 If you are using `aws sso login`, make sure the SSO session is active before running `ccwb init`:
@@ -840,7 +840,7 @@ If you are using `aws sso login`, make sure the SSO session is active before run
 ```bash
 aws sso login --profile <your-profile>
 export AWS_PROFILE=<your-profile>
-poetry run ccwb init
+uv run ccwb init
 ```
 
 ### Authentication Issues (end-user credential refresh)
@@ -916,7 +916,7 @@ file ~/claude-code-with-bedrock/credential-process        # binary's CPU arch
 # ccwb detects it automatically at /Library/Frameworks/Python.framework/
 
 # Rebuild — now produces both macos-arm64 and macos-intel
-poetry run ccwb package --target-platform all
+uv run ccwb package --target-platform all
 ```
 
 Redistribute the new package. The installer auto-detects architecture and installs the correct binary.
@@ -961,7 +961,7 @@ aws configure set credential_process `
 Check Windows build status:
 
 ```bash
-poetry run ccwb builds
+uv run ccwb builds
 ```
 
 ### Stack Deployment Issues
@@ -969,7 +969,7 @@ poetry run ccwb builds
 View stack status:
 
 ```bash
-poetry run ccwb status
+uv run ccwb status
 ```
 
 For detailed troubleshooting, see [Deployment Guide](assets/docs/DEPLOYMENT.md).

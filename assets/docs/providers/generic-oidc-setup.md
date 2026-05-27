@@ -67,8 +67,8 @@ You also need the **SHA-1 thumbprint** of the JWKS endpoint's TLS leaf certifica
 
 ```bash
 cd source
-poetry install
-poetry run ccwb init
+uv sync
+uv run ccwb init
 ```
 
 When the wizard asks "Select your identity provider type", choose **Generic OIDC (PingFederate, Keycloak, ForgeRock, etc.)**. The wizard will:
@@ -94,7 +94,7 @@ The resulting profile is saved to `~/.ccwb/profiles/<name>.json` with these new 
 Then deploy:
 
 ```bash
-poetry run ccwb deploy auth
+uv run ccwb deploy auth
 ```
 
 This applies `deployment/infrastructure/bedrock-auth-generic.yaml`, which provisions the IAM OIDC Provider with your issuer URL and thumbprint, plus the federated role and Bedrock policy.
@@ -201,7 +201,7 @@ echo | openssl s_client -servername "$HOST" -connect "$HOST:443" 2>/dev/null \
 
 ### My IdP rotates the JWKS cert. What do I do?
 
-The IAM OIDC Provider accepts multiple thumbprints. For now, the wizard only collects one — to add a second, edit `~/.ccwb/profiles/<name>.json` and set `oidc_thumbprint` to a comma-separated list, then redeploy with `poetry run ccwb deploy auth`.
+The IAM OIDC Provider accepts multiple thumbprints. For now, the wizard only collects one — to add a second, edit `~/.ccwb/profiles/<name>.json` and set `oidc_thumbprint` to a comma-separated list, then redeploy with `uv run ccwb deploy auth`.
 
 ---
 
@@ -216,7 +216,7 @@ Per-user Bedrock costs are tracked automatically via the session tag — no IdP 
 After `ccwb init` succeeds:
 
 ```bash
-poetry run ccwb deploy        # deploy all configured stacks
-poetry run ccwb test --api    # smoke-test authentication + Bedrock invoke
-poetry run ccwb package       # build distribution for end users
+uv run ccwb deploy        # deploy all configured stacks
+uv run ccwb test --api    # smoke-test authentication + Bedrock invoke
+uv run ccwb package       # build distribution for end users
 ```

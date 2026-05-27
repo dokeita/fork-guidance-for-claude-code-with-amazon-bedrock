@@ -35,7 +35,7 @@ During `ccwb init`, quota monitoring is **enabled by default** when monitoring i
 - Daily token limit with burst buffer (auto-calculated from monthly)
 - Enforcement modes for daily and monthly limits
 
-Deploy using `poetry run ccwb deploy` (deploys all enabled stacks) or `poetry run ccwb deploy quota` for just the quota stack. The OIDC configuration is automatically passed from your profile settings. For complete deployment instructions, see the [CLI Reference](CLI_REFERENCE.md#deploy---deploy-infrastructure).
+Deploy using `uv run ccwb deploy` (deploys all enabled stacks) or `uv run ccwb deploy quota` for just the quota stack. The OIDC configuration is automatically passed from your profile settings. For complete deployment instructions, see the [CLI Reference](CLI_REFERENCE.md#deploy---deploy-infrastructure).
 
 ## Configuration Settings
 

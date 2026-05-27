@@ -406,7 +406,7 @@ Once you've completed this setup:
    ```bash
    git clone https://github.com/aws-solutions-library-samples/guidance-for-claude-code-with-amazon-bedrock.git
    cd claude-code-setup
-   poetry install
+   uv sync
    ```
 2. Run the setup wizard: `ccwb init`
 3. Create a distribution package: `ccwb package`

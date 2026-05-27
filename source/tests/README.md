@@ -9,19 +9,19 @@ This directory contains all tests for the Claude Code with Bedrock project. Test
 cd source
 
 # Install dependencies
-poetry install
+uv sync
 
 # Run all tests (Note: Some tests may fail when run together - see Troubleshooting)
-poetry run pytest ../tests
+uv run pytest ../tests
 
 # Run with verbose output
-poetry run pytest ../tests -v
+uv run pytest ../tests -v
 
 # Recommended: Run tests by category for best results
-poetry run pytest ../tests/lambda/test_quota_monitor.py -v      # Quota monitor tests
-poetry run pytest ../tests/lambda/test_metrics_aggregator.py -v  # Metrics aggregator tests
-poetry run pytest ../tests/cli/ -v                              # CLI command tests
-poetry run pytest ../tests/integration/ -v                      # Integration tests
+uv run pytest ../tests/lambda/test_quota_monitor.py -v      # Quota monitor tests
+uv run pytest ../tests/lambda/test_metrics_aggregator.py -v  # Metrics aggregator tests
+uv run pytest ../tests/cli/ -v                              # CLI command tests
+uv run pytest ../tests/integration/ -v                      # Integration tests
 ```
 
 ## Prerequisites
@@ -29,12 +29,12 @@ poetry run pytest ../tests/integration/ -v                      # Integration te
 Before running tests, ensure you have:
 
 1. **Python 3.12+** installed
-2. **Poetry** for dependency management
+2. **uv** for dependency management
 3. **Working directory**: Navigate to the `source` directory before running tests
 
 ```bash
 cd source
-poetry install  # Install all dependencies including test requirements
+uv sync  # Install all dependencies including test requirements
 ```
 
 ## Test Structure
@@ -77,13 +77,13 @@ The following test categories are planned but not yet implemented:
 
 ```bash
 # Run all tests
-poetry run pytest ../tests
+uv run pytest ../tests
 
 # Run all tests with verbose output
-poetry run pytest ../tests -v
+uv run pytest ../tests -v
 
 # Run all tests with coverage report
-poetry run pytest ../tests --cov=claude_code_with_bedrock --cov-report=term-missing
+uv run pytest ../tests --cov=claude_code_with_bedrock --cov-report=term-missing
 ```
 
 ### By Category
@@ -91,43 +91,43 @@ poetry run pytest ../tests --cov=claude_code_with_bedrock --cov-report=term-miss
 #### CLI Command Tests
 ```bash
 # All CLI tests
-poetry run pytest ../tests/cli/commands/
+uv run pytest ../tests/cli/commands/
 
 # Specific command tests
-poetry run pytest ../tests/cli/commands/test_init*.py  # Init command tests
-poetry run pytest ../tests/cli/commands/test_deploy*.py  # Deploy command tests
-poetry run pytest ../tests/cli/commands/test_package*.py  # Package command tests
+uv run pytest ../tests/cli/commands/test_init*.py  # Init command tests
+uv run pytest ../tests/cli/commands/test_deploy*.py  # Deploy command tests
+uv run pytest ../tests/cli/commands/test_package*.py  # Package command tests
 ```
 
 #### Core Functionality Tests
 ```bash
 # Model configuration tests
-poetry run pytest ../tests/test_models.py
+uv run pytest ../tests/test_models.py
 
 # Source regions tests
-poetry run pytest ../tests/test_source_regions.py
+uv run pytest ../tests/test_source_regions.py
 
 # CloudFormation template validation
-poetry run pytest ../tests/test_cloudformation.py
+uv run pytest ../tests/test_cloudformation.py
 
 # Configuration and profile tests
-poetry run pytest ../tests/test_config*.py
+uv run pytest ../tests/test_config*.py
 
 # Smoke tests (imports, instantiation)
-poetry run pytest ../tests/test_smoke.py
+uv run pytest ../tests/test_smoke.py
 ```
 
 ### Specific Test Files or Functions
 
 ```bash
 # Run a specific test file
-poetry run pytest ../tests/lambda/test_quota_monitor.py
+uv run pytest ../tests/lambda/test_quota_monitor.py
 
 # Run a specific test class
-poetry run pytest ../tests/lambda/test_quota_monitor.py::TestQuotaMonitorLambda
+uv run pytest ../tests/lambda/test_quota_monitor.py::TestQuotaMonitorLambda
 
 # Run a specific test function
-poetry run pytest ../tests/lambda/test_quota_monitor.py::TestQuotaMonitorLambda::test_lambda_handler_no_usage
+uv run pytest ../tests/lambda/test_quota_monitor.py::TestQuotaMonitorLambda::test_lambda_handler_no_usage
 ```
 
 ## Test Options
@@ -136,64 +136,64 @@ poetry run pytest ../tests/lambda/test_quota_monitor.py::TestQuotaMonitorLambda:
 
 ```bash
 # Quiet mode (minimal output)
-poetry run pytest ../tests -q
+uv run pytest ../tests -q
 
 # Verbose mode (detailed output)
-poetry run pytest ../tests -v
+uv run pytest ../tests -v
 
 # Extra verbose (show test output)
-poetry run pytest ../tests -vv
+uv run pytest ../tests -vv
 
 # Show print statements during tests
-poetry run pytest ../tests -s
+uv run pytest ../tests -s
 
 # Combined verbose with prints
-poetry run pytest ../tests -xvs
+uv run pytest ../tests -xvs
 ```
 
 ### Failure Handling
 
 ```bash
 # Stop on first failure
-poetry run pytest ../tests -x
+uv run pytest ../tests -x
 
 # Stop after N failures
-poetry run pytest ../tests --maxfail=3
+uv run pytest ../tests --maxfail=3
 
 # Show last failed tests
-poetry run pytest ../tests --lf
+uv run pytest ../tests --lf
 
 # Show failed tests first, then pass
-poetry run pytest ../tests --ff
+uv run pytest ../tests --ff
 ```
 
 ### Performance
 
 ```bash
 # Run tests in parallel (requires pytest-xdist)
-poetry run pytest ../tests -n auto
+uv run pytest ../tests -n auto
 
 # Show slowest tests
-poetry run pytest ../tests --durations=10
+uv run pytest ../tests --durations=10
 
 # Timeout for tests (requires pytest-timeout)
-poetry run pytest ../tests --timeout=60
+uv run pytest ../tests --timeout=60
 ```
 
 ### Coverage Reports
 
 ```bash
 # Generate coverage report
-poetry run pytest ../tests --cov=claude_code_with_bedrock
+uv run pytest ../tests --cov=claude_code_with_bedrock
 
 # Coverage with missing lines
-poetry run pytest ../tests --cov=claude_code_with_bedrock --cov-report=term-missing
+uv run pytest ../tests --cov=claude_code_with_bedrock --cov-report=term-missing
 
 # Generate HTML coverage report
-poetry run pytest ../tests --cov=claude_code_with_bedrock --cov-report=html
+uv run pytest ../tests --cov=claude_code_with_bedrock --cov-report=html
 
 # Coverage for specific modules
-poetry run pytest ../tests --cov=claude_code_with_bedrock.cli.commands
+uv run pytest ../tests --cov=claude_code_with_bedrock.cli.commands
 ```
 
 ## Test Categories Explained
@@ -221,22 +221,22 @@ poetry run pytest ../tests --cov=claude_code_with_bedrock.cli.commands
 
 ```bash
 # Quick test run (no output unless failures)
-poetry run pytest ../tests -q
+uv run pytest ../tests -q
 
 # Development testing (verbose, stop on failure, show prints)
-poetry run pytest ../tests -xvs
+uv run pytest ../tests -xvs
 
 # Full test suite with coverage
-poetry run pytest ../tests --cov=claude_code_with_bedrock --cov-report=term-missing
+uv run pytest ../tests --cov=claude_code_with_bedrock --cov-report=term-missing
 
 # Test a specific feature area
-poetry run pytest ../tests -k "quota"  # Run all tests with "quota" in the name
+uv run pytest ../tests -k "quota"  # Run all tests with "quota" in the name
 
 # Run tests matching a pattern
-poetry run pytest ../tests -k "test_deploy or test_init"
+uv run pytest ../tests -k "test_deploy or test_init"
 
 # Exclude slow tests (if marked)
-poetry run pytest ../tests -m "not slow"
+uv run pytest ../tests -m "not slow"
 ```
 
 ## Troubleshooting
@@ -251,15 +251,15 @@ If you encounter import errors for Lambda functions:
 Lambda tests may fail when run together but pass individually due to module state contamination:
 ```bash
 # Lambda tests should be run separately by file for best results
-poetry run pytest ../tests/lambda/test_quota_monitor.py -v      # ✅ All pass
-poetry run pytest ../tests/lambda/test_metrics_aggregator.py -v  # ✅ All pass
+uv run pytest ../tests/lambda/test_quota_monitor.py -v      # ✅ All pass
+uv run pytest ../tests/lambda/test_metrics_aggregator.py -v  # ✅ All pass
 
 # Running both together may cause failures due to shared module state
-poetry run pytest ../tests/lambda/ -v  # ⚠️ Some tests may fail
+uv run pytest ../tests/lambda/ -v  # ⚠️ Some tests may fail
 
 # CLI and other tests can be run together without issues
-poetry run pytest ../tests/cli/ -v       # ✅ Works fine
-poetry run pytest ../tests/integration/ -v  # ✅ Works fine
+uv run pytest ../tests/cli/ -v       # ✅ Works fine
+uv run pytest ../tests/integration/ -v  # ✅ Works fine
 ```
 
 **Why this happens:** Lambda functions create boto3 clients at module import time. When multiple test files import the same Lambda module with different mock configurations, the module state gets contaminated. The tests use module-scoped fixtures to minimize this issue, but complete isolation would require more complex module reloading between test files.
@@ -323,10 +323,10 @@ For continuous integration, use:
 
 ```bash
 # CI-friendly output with coverage
-poetry run pytest ../tests --junitxml=test-results.xml --cov=claude_code_with_bedrock --cov-report=xml
+uv run pytest ../tests --junitxml=test-results.xml --cov=claude_code_with_bedrock --cov-report=xml
 
 # Strict mode for CI (fail on warnings)
-poetry run pytest ../tests --strict-markers -W error
+uv run pytest ../tests --strict-markers -W error
 ```
 
 ## Support
@@ -335,4 +335,4 @@ For test-related issues:
 1. Check test output for detailed error messages
 2. Run with `-xvs` flags for maximum debugging information
 3. Review test fixtures and mocks for correctness
-4. Ensure all dependencies are installed with `poetry install`
+4. Ensure all dependencies are installed with `uv sync`

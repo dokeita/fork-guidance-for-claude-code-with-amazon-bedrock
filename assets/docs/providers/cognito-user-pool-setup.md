@@ -62,7 +62,7 @@ aws cloudformation describe-stacks \
 
 ```bash
 # Initialize Claude Code with your User Pool
-poetry run ccwb init
+uv run ccwb init
 
 # When prompted, enter:
 # - Provider Domain: <your-domain-prefix>.auth.<region>.amazoncognito.com
@@ -74,7 +74,7 @@ poetry run ccwb init
 
 ```bash
 # Deploy the authentication infrastructure
-poetry run ccwb deploy --type auth
+uv run ccwb deploy --type auth
 ```
 
 ## Configuration Options

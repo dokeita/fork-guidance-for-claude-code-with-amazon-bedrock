@@ -172,10 +172,10 @@ You now have everything needed for the CloudFormation deployment:
 
 ### Use the values with ccwb init
 
-When running `poetry run ccwb init`, you'll be prompted for these values:
+When running `uv run ccwb init`, you'll be prompted for these values:
 
 ```bash
-poetry run ccwb init
+uv run ccwb init
 
 # The wizard will ask for:
 # - Okta Domain: dev-12345678.okta.com    (your domain from above)
@@ -327,20 +327,20 @@ After completing Okta configuration:
 
 ```bash
 # Deploy the quota monitoring stack
-poetry run ccwb deploy quota
+uv run ccwb deploy quota
 
 # Set a default quota for all users (required)
-poetry run ccwb quota set-default --monthly-limit 225M
+uv run ccwb quota set-default --monthly-limit 225M
 
 # Optional: Set group-based quotas (requires groups claim)
-poetry run ccwb quota set-group engineering --monthly-limit 500M
-poetry run ccwb quota set-group data-science --monthly-limit 1B
+uv run ccwb quota set-group engineering --monthly-limit 500M
+uv run ccwb quota set-group data-science --monthly-limit 1B
 
 # Optional: Set user-specific quotas
-poetry run ccwb quota set-user power.user@company.com --monthly-limit 500M
+uv run ccwb quota set-user power.user@company.com --monthly-limit 500M
 
 # Test the quota API
-poetry run ccwb test quota-api
+uv run ccwb test quota-api
 ```
 
 ### Verifying Your Configuration
@@ -392,11 +392,11 @@ Once you've completed this Okta setup:
    ```bash
    git clone https://github.com/aws-solutions-library-samples/guidance-for-claude-code-with-amazon-bedrock.git
    cd claude-code-setup
-   poetry install
+   uv sync
    ```
-2. Run the setup wizard: `poetry run ccwb init`
-3. Create a distribution package: `poetry run ccwb package`
-4. Test the deployment: `poetry run ccwb test --api`
+2. Run the setup wizard: `uv run ccwb init`
+3. Create a distribution package: `uv run ccwb package`
+4. Test the deployment: `uv run ccwb test --api`
 5. Distribute the `dist/` folder to your users
 
 ---

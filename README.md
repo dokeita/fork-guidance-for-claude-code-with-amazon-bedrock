@@ -75,7 +75,7 @@ See [QUICK_START.md](QUICK_START.md) for complete step-by-step deployment instru
 If you've deployed this guidance for Claude Code, extend it to Claude Cowork (Claude Desktop) with one command:
 
 ```bash
-poetry run ccwb cowork generate
+uv run ccwb cowork generate
 ```
 
 This generates MDM configuration files (JSON, macOS .mobileconfig, Windows .reg) using your existing deployment profile. See the [CoWork 3P Guide](assets/docs/COWORK_3P.md) for setup and deployment details.
@@ -155,7 +155,7 @@ For deployment patterns and best practices, see the [Claude Code deployment patt
 **Software Requirements:**
 
 - Python 3.10-3.13
-- Poetry (dependency management)
+- uv (dependency management)
 - AWS CLI v2
 - Git
 - Go 1.23+ (optional — only needed for building the OTEL collector sidecar)
@@ -192,7 +192,7 @@ For deployment patterns and best practices, see the [Claude Code deployment patt
 
 **No AWS account required** - users authenticate through your organization's identity provider and receive temporary credentials automatically.
 
-**No Python, Poetry, or Git required** - users receive pre-built installation packages from IT administrators.
+**No Python, uv, or Git required** - users receive pre-built installation packages from IT administrators.
 
 ### Supported AWS Regions
 

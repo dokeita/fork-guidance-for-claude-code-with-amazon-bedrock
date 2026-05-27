@@ -43,7 +43,7 @@ User → ALB (HTTPS) → OIDC Authentication (IdP) → Lambda → S3 (presigned 
 
 - **AWS CLI**: Installed and configured with credentials
 - **Python 3.10+**: Required for ccwb CLI
-- **Poetry**: Python package manager (`curl -sSL https://install.python-poetry.org | python3 -`)
+- **uv**: Python package manager (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
 - **Basic Authentication Configured**: Must have completed `ccwb init` for Bedrock authentication
 - **Packages Built**: Run `ccwb package` to create distribution packages
 
@@ -77,7 +77,7 @@ Simple distribution workflow for small teams with no authentication requirements
 Run the init wizard and select presigned S3 distribution:
 
 ```bash
-poetry run ccwb init
+uv run ccwb init
 ```
 
 When prompted for distribution method:
@@ -94,7 +94,7 @@ The wizard will:
 Deploy the presigned-s3 distribution infrastructure:
 
 ```bash
-poetry run ccwb deploy distribution
+uv run ccwb deploy distribution
 ```
 
 This creates:
@@ -110,7 +110,7 @@ This creates:
 Build packages for all platforms:
 
 ```bash
-poetry run ccwb package --target-platform all
+uv run ccwb package --target-platform all
 ```
 
 This creates executables in `dist/` directory:
@@ -127,7 +127,7 @@ This creates executables in `dist/` directory:
 Upload packages and generate presigned URLs:
 
 ```bash
-poetry run ccwb distribute
+uv run ccwb distribute
 ```
 
 Output includes:
@@ -150,7 +150,7 @@ Output includes:
 **Retrieve latest URL** without regenerating:
 
 ```bash
-poetry run ccwb distribute --get-latest
+uv run ccwb distribute --get-latest
 ```
 
 ### Presigned-S3 Stack Outputs
@@ -351,7 +351,7 @@ aws cloudformation deploy \
 
 ##### Step 2: Configuration is Automatic!
 
-When you run `poetry run ccwb init` (Phase 2), the wizard will:
+When you run `uv run ccwb init` (Phase 2), the wizard will:
 
 1. **Auto-detect** your Cognito stack
 2. **Validate** it has distribution support
@@ -385,7 +385,7 @@ Now that you have IdP web application credentials, configure and deploy the land
 Run the init wizard:
 
 ```bash
-poetry run ccwb init
+uv run ccwb init
 ```
 
 When prompted for distribution method:
@@ -445,7 +445,7 @@ Landing page requires VPC with public/private subnets in 2+ availability zones.
 **Option B: Create new VPC via ccwb**:
 
 ```bash
-poetry run ccwb deploy networking
+uv run ccwb deploy networking
 ```
 
 This creates:
@@ -464,7 +464,7 @@ This creates:
 Deploy the authenticated landing page infrastructure:
 
 ```bash
-poetry run ccwb deploy distribution
+uv run ccwb deploy distribution
 ```
 
 This creates:
@@ -485,7 +485,7 @@ This creates:
 After deployment completes, get the stack outputs:
 
 ```bash
-poetry run ccwb deploy distribution
+uv run ccwb deploy distribution
 ```
 
 The deployment will display:
@@ -590,7 +590,7 @@ Or via AWS Console:
 Build packages for all platforms:
 
 ```bash
-poetry run ccwb package --target-platform all
+uv run ccwb package --target-platform all
 ```
 
 #### Step 4.2: Distribute Packages
@@ -598,7 +598,7 @@ poetry run ccwb package --target-platform all
 Upload packages to the landing page:
 
 ```bash
-poetry run ccwb distribute
+uv run ccwb distribute
 ```
 
 Output for landing-page type:
@@ -690,20 +690,20 @@ Both distribution types use the same publishing workflow.
 Build executables for all platforms:
 
 ```bash
-poetry run ccwb package --target-platform all
+uv run ccwb package --target-platform all
 ```
 
 Or build for specific platforms:
 
 ```bash
 # macOS only
-poetry run ccwb package --target-platform macos
+uv run ccwb package --target-platform macos
 
 # Windows only (requires CodeBuild)
-poetry run ccwb package --target-platform windows
+uv run ccwb package --target-platform windows
 
 # Linux only
-poetry run ccwb package --target-platform linux
+uv run ccwb package --target-platform linux
 ```
 
 Packages are created in `dist/` directory:
@@ -719,7 +719,7 @@ Packages are created in `dist/` directory:
 Upload packages and generate distribution URLs:
 
 ```bash
-poetry run ccwb distribute
+uv run ccwb distribute
 ```
 
 **For presigned-s3**:
@@ -742,13 +742,13 @@ Set custom expiry time (1-168 hours):
 
 ```bash
 # 48 hours (default)
-poetry run ccwb distribute --expires-hours 48
+uv run ccwb distribute --expires-hours 48
 
 # 1 hour (minimum)
-poetry run ccwb distribute --expires-hours 1
+uv run ccwb distribute --expires-hours 1
 
 # 7 days (168 hours, maximum)
-poetry run ccwb distribute --expires-hours 168
+uv run ccwb distribute --expires-hours 168
 ```
 
 **Note**: IAM user presigned URLs have a maximum lifetime of 7 days (168 hours).
@@ -758,7 +758,7 @@ poetry run ccwb distribute --expires-hours 168
 Get the latest presigned URL without regenerating:
 
 ```bash
-poetry run ccwb distribute --get-latest
+uv run ccwb distribute --get-latest
 ```
 
 Displays:
@@ -779,7 +779,7 @@ You can switch between presigned-s3 and landing-page at any time.
 1. **Reconfigure profile**:
 
    ```bash
-   poetry run ccwb init
+   uv run ccwb init
    ```
 
    - Select different distribution type
@@ -788,7 +788,7 @@ You can switch between presigned-s3 and landing-page at any time.
 2. **Redeploy distribution stack**:
 
    ```bash
-   poetry run ccwb deploy distribution
+   uv run ccwb deploy distribution
    ```
 
    - CloudFormation will **replace** the existing stack with new type
@@ -797,8 +797,8 @@ You can switch between presigned-s3 and landing-page at any time.
 
 3. **Publish packages** to new distribution:
    ```bash
-   poetry run ccwb package
-   poetry run ccwb distribute
+   uv run ccwb package
+   uv run ccwb distribute
    ```
 
 ### Important Notes
@@ -819,13 +819,13 @@ To publish new package versions:
 1. **Build new packages**:
 
    ```bash
-   poetry run ccwb package --target-platform all
+   uv run ccwb package --target-platform all
    ```
 
 2. **Upload to distribution**:
 
    ```bash
-   poetry run ccwb distribute
+   uv run ccwb distribute
    ```
 
 3. **Notify users**:
@@ -849,7 +849,7 @@ To publish new package versions:
 1. **Reconfigure with custom domain**:
 
    ```bash
-   poetry run ccwb init
+   uv run ccwb init
    ```
 
    - When prompted for custom domain: **yes**
@@ -859,7 +859,7 @@ To publish new package versions:
 2. **Redeploy distribution stack**:
 
    ```bash
-   poetry run ccwb deploy distribution
+   uv run ccwb deploy distribution
    ```
 
    - Creates ACM certificate

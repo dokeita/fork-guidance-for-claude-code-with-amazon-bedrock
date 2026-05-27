@@ -56,16 +56,16 @@ If you've deployed this solution, the `ccwb cowork generate` command auto-genera
 
 ```bash
 # Generate all formats (JSON, macOS .mobileconfig, Windows .reg)
-poetry run ccwb cowork generate
+uv run ccwb cowork generate
 
 # Generate only macOS profile
-poetry run ccwb cowork generate --format mobileconfig
+uv run ccwb cowork generate --format mobileconfig
 
 # Custom model list
-poetry run ccwb cowork generate --models opus,sonnet,haiku
+uv run ccwb cowork generate --models opus,sonnet,haiku
 
 # Specific deployment profile
-poetry run ccwb cowork generate --profile Production
+uv run ccwb cowork generate --profile Production
 ```
 
 Generated files are saved to `dist/cowork-3p/` by default. See [CLI Reference](CLI_REFERENCE.md#cowork-generate---generate-mdm-configuration) for all options.

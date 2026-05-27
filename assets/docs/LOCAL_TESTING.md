@@ -7,8 +7,8 @@ Before distributing Claude Code authentication to your organization, thorough lo
 The CLI provides comprehensive automated testing that simulates exactly what your users will experience:
 
 ```bash
-poetry run ccwb test         # Basic authentication test
-poetry run ccwb test --api   # Full test including Bedrock API calls
+uv run ccwb test         # Basic authentication test
+uv run ccwb test --api   # Full test including Bedrock API calls
 ```
 
 This single command runs through the entire user journey - installation, authentication, and Bedrock access. For most deployments, this automated testing provides sufficient validation. However, understanding what happens behind the scenes and testing edge cases helps you support users more effectively.
@@ -21,7 +21,7 @@ To check your authentication stack status:
 
 ```bash
 # Check the auth stack (uses the identity pool name from your deployment)
-poetry run ccwb status --detailed
+uv run ccwb status --detailed
 ```
 
 This shows the status of all your deployed stacks.
