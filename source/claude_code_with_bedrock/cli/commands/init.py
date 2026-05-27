@@ -1685,15 +1685,18 @@ class InitCommand(Command):
         table.add_column("Setting", style="white", no_wrap=True)
         table.add_column("Value", style="green")
 
-        table.add_row("OIDC Provider", config["okta"]["domain"])
-        table.add_row(
-            "OIDC Client ID",
-            (
-                config["okta"]["client_id"][:20] + "..."
-                if len(config["okta"]["client_id"]) > 20
-                else config["okta"]["client_id"]
-            ),
-        )
+        if config.get("okta"):
+            table.add_row("OIDC Provider", config["okta"]["domain"])
+            table.add_row(
+                "OIDC Client ID",
+                (
+                    config["okta"]["client_id"][:20] + "..."
+                    if len(config["okta"]["client_id"]) > 20
+                    else config["okta"]["client_id"]
+                ),
+            )
+        else:
+            table.add_row("SSO Authentication", "✗ Disabled (using existing AWS credentials)")
 
         table.add_row(
             "Credential Storage",
